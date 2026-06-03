@@ -3,72 +3,52 @@ export const submitCallResultTool = {
   function: {
     name: "submit_call_result",
     description:
-      "Call this function when the conversation reaches a terminal state. Submit all data collected during the call.",
+      "Call this when the conversation reaches any terminal state. Submit everything captured so far. Mandatory on every exit path.",
     parameters: {
       type: "object",
-      required: [
-        "rpc_confirmed",
-        "interested",
-        "disposition",
-        "exit_state",
-      ],
+      required: ["rpc_confirmed", "interest", "exit_state"],
       properties: {
         rpc_confirmed: {
           type: "boolean",
-          description: "Whether the person confirmed they are the intended lead",
+          description: "True if the right party confirmed they are the intended lead.",
         },
-        interested: {
-          type: "boolean",
-          description: "Whether the person expressed interest in a personal loan",
-        },
-        loan_amount_value: {
-          type: ["number", "null"],
-          description: "Loan amount in INR. Null if not captured or unclear.",
-        },
-        loan_amount_unit: {
-          type: ["string", "null"],
-          enum: ["lakh", "crore", null],
-          description: "Unit of the loan amount",
-        },
-        loan_amount_display: {
-          type: ["string", "null"],
-          description: "Human-readable loan amount as spoken, e.g. '5 lakh'",
+        interest: {
+          type: "string",
+          enum: ["INTERESTED", "NOT_INTERESTED", "DEFERRED"],
+          description:
+            "INTERESTED = wants to know more; NOT_INTERESTED = declined; DEFERRED = asked to be called back later.",
         },
         employment_type: {
-          type: ["string", "null"],
-          enum: ["salaried", "self_employed", "other", null],
-          description: "Employment classification. Null if not captured.",
-        },
-        disposition: {
           type: "string",
-          enum: [
-            "QUALIFIED_HANDOFF",
-            "NOT_INTERESTED",
-            "WRONG_PERSON",
-            "TIMEOUT",
-            "UNCLEAR",
-            "ERROR",
-          ],
-          description: "Final outcome of the call",
+          enum: ["SALARIED", "SELF_EMPLOYED", "NOT_CAPTURED"],
+          description:
+            "Employment classification. Use NOT_CAPTURED if unclear twice or timed out.",
+        },
+        loan_amount_range: {
+          type: "string",
+          enum: ["1_3L", "3_5L", "5L_PLUS", "NOT_CAPTURED"],
+          description:
+            "Loan amount bucket: 1_3L (up to 3 lakh), 3_5L (3-5 lakh), 5L_PLUS (above 5 lakh). NOT_CAPTURED if unclear twice or timed out.",
+        },
+        unclear_count: {
+          type: "number",
+          description: "Total number of UNCLEAR classifications across the whole call.",
+        },
+        hard_timeout_fired: {
+          type: "boolean",
+          description:
+            "True if the 53-second hard deadline forced an early jump to handoff.",
         },
         exit_state: {
           type: "string",
           enum: [
             "HANDOFF",
-            "CALL_END",
-            "WRONG_PERSON_EXIT",
-            "NOT_INTERESTED_EXIT",
-            "TIMEOUT_EXIT",
-            "UNCLEAR_EXIT",
-            "ERROR_EXIT",
+            "EXIT_WRONG_PARTY",
+            "EXIT_NO_ANSWER",
+            "EXIT_NOT_INTERESTED",
+            "EXIT_UNRESOLVED",
           ],
-          description: "The FSM state at which the call ended",
-        },
-        flags: {
-          type: "array",
-          items: { type: "string" },
-          description:
-            "Edge case flags: out_of_range_amount, language_switch, garbage_stt, identity_question, double_unclear, customer_interruption, service_failure",
+          description: "The FSM state at which the call ended.",
         },
       },
     },
