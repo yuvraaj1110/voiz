@@ -1,0 +1,21 @@
+{
+  "name": "voiz",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node src/server/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "setup": "node scripts/setup-assistant.js",
+    "call": "node scripts/make-call.js"
+  },
+  "dependencies": {
+    "@vapi-ai/server-sdk": "^0.3.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.1"
+  }
+}
