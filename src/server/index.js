@@ -7,9 +7,30 @@ app.use(express.json());
 
 app.post("/webhook/vapi", (req, res) => {
   const event = req.body;
-  console.log(`[webhook] event type: ${event.message?.type ?? "unknown"}`);
+  const msgType = event.message?.type ?? "unknown";
+  console.log(`[webhook] event type: ${msgType}`);
 
-  if (event.message?.type === "end-of-call-report") {
+  // ── Live tool-call: Vapi fires this mid-call and waits for our ack ──────────
+  // Must respond with { results: [{ toolCallId, result }] } or the LLM retries.
+  if (msgType === "tool-calls") {
+    const toolCallList = event.message?.toolCallList ?? [];
+    const results = toolCallList.map((tc) => {
+      const name = tc.function?.name ?? "";
+      const rawArgs = tc.function?.arguments ?? "{}";
+      const args = typeof rawArgs === "string" ? JSON.parse(rawArgs) : rawArgs;
+
+      if (name === "submit_call_result") {
+        console.log("[tool-call] submit_call_result received:", JSON.stringify(args, null, 2));
+      }
+
+      return { toolCallId: tc.id, result: "success" };
+    });
+
+    return res.status(200).json({ results });
+  }
+
+  // ── End-of-call report: full call summary, build & log CRM payload ──────────
+  if (msgType === "end-of-call-report") {
     const callData = event.message.call;
     const toolCalls = event.message.artifact?.toolCalls ?? [];
 
