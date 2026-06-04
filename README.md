@@ -1,85 +1,11 @@
-# VOIZ — Hindi Voice Lead Qualification Agent
+## What I built
 
-Outbound voice agent that calls loan prospects in Hindi, confirms identity (RPC), checks interest, asks 2 qualifying questions, and hands off to a human sales rep with a structured JSON payload.
+A working outbound voice prototype of the qualification layer. It calls a loan prospect in Hindi, confirms the right party, states the offer, checks interest, then asks two qualifying questions — employment type, then loan-amount bucket — and hands off to a human rep with a structured JSON payload, inside 55 seconds. The conversation is a finite state machine in the LLM prompt (Vapi + Deepgram Nova-3 + Claude Haiku); a Node/Express webhook builds the CRM payload and scores each lead 0–100 for rep triage. Setup: `npm install`, then `npm run demo:edge-cases` replays all nine exit/failure paths through the real payload-builder. Full detail in `docs/SETUP.md`.
 
-## Architecture
+## What I'd do differently with more time
 
-- **Vapi** — Voice orchestration (outbound calls, turn management)
-- **Deepgram Nova-2** — Hindi speech-to-text
-- **GPT-4o-mini** — Intent classification via FSM system prompt
-- **ElevenLabs** — Hindi text-to-speech
+The decision I'm least confident in is asking employment type before loan amount. I ordered it as an eligibility filter — disqualify early, save seconds — but for a distrustful Tier 2/3 customer, a personal "salaried or business?" question before any value is established may raise their guard and increase early hangups. I'd A/B test both orderings against qualification-completion and drop-off rate before committing.
 
-## Call Flow
+## One assumption I wish I could validate
 
-```
-GREETING → INTEREST CHECK → LOAN AMOUNT → EMPLOYMENT TYPE → HANDOFF
-```
-
-55-second hard cap. 4 conversational turns max. Handles 8 edge cases (garbage STT, language switch, identity questions, double-unclear, hard timeout, out-of-range amounts, interruptions, service failures).
-
-## Setup
-
-```bash
-npm install
-cp .env.example .env
-# Fill in your API keys in .env
-```
-
-### Start webhook server
-
-```bash
-npm run dev          # starts Express on port 3000
-ngrok http 3000      # tunnel for Vapi webhooks
-```
-
-### Create Vapi assistant
-
-```bash
-npm run setup        # creates assistant via Vapi API
-# Save the returned assistant ID to .env
-```
-
-### Make a test call
-
-```bash
-npm run call         # triggers outbound call to TEST_PHONE_NUMBER
-```
-
-## Tests
-
-```bash
-npm test
-```
-
-## Project Structure
-
-```
-src/
-  prompts/system-prompt.txt    — FSM system prompt (conversation brain)
-  server/index.js              — Express webhook server
-  server/payload-builder.js    — CRM payload construction
-  vapi/assistant-config.js     — Vapi assistant configuration
-  vapi/tool-schemas.js         — Function tool for structured data extraction
-scripts/
-  setup-assistant.js           — Create Vapi assistant
-  make-call.js                 — Trigger test call
-tests/                         — Unit tests (vitest)
-```
-
-## Output
-
-Each call produces a structured CRM payload:
-
-```json
-{
-  "call_id": "uuid",
-  "lead_name": "Rajesh Kumar",
-  "rpc_confirmed": true,
-  "interested": true,
-  "loan_amount": { "value": 500000, "unit": "lakh", "display": "5 lakh" },
-  "employment_type": "salaried",
-  "disposition": "QUALIFIED_HANDOFF",
-  "flags": [],
-  "uncaptured_fields": []
-}
-```
+That Tier 2/3 prospects will tolerate two extra qualifying questions (~25 added seconds) without hang-up rates rising enough to erase the rep-time savings the layer is meant to deliver.
