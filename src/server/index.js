@@ -1,6 +1,11 @@
 import "dotenv/config";
 import express from "express";
+import fs from "fs";
+import path from "path";
 import { buildCrmPayload } from "./payload-builder.js";
+
+const PAYLOADS_DIR = path.resolve("payloads");
+if (!fs.existsSync(PAYLOADS_DIR)) fs.mkdirSync(PAYLOADS_DIR);
 
 const app = express();
 app.use(express.json());
@@ -91,7 +96,32 @@ app.post("/webhook/vapi", (req, res) => {
     }
 
     const crmPayload = buildCrmPayload(callData, args);
-    console.log("[CRM PAYLOAD]", JSON.stringify(crmPayload, null, 2));
+
+    // ── Write to payloads/<callId>.json ──────────────────────────────────────
+    const filename = path.join(PAYLOADS_DIR, `${callData.id ?? "unknown"}.json`);
+    fs.writeFileSync(filename, JSON.stringify(crmPayload, null, 2));
+
+    // ── Pretty console summary ───────────────────────────────────────────────
+    const score = crmPayload.rep_priority_score;
+    const scoreBar = "█".repeat(Math.round(score / 10)) + "░".repeat(10 - Math.round(score / 10));
+    console.log("\n╔══════════════════════════════════════════════╗");
+    console.log("║           VOIZ — CRM HANDOFF PAYLOAD         ║");
+    console.log("╠══════════════════════════════════════════════╣");
+    console.log(`║  call_id        ${String(crmPayload.call_id).slice(0,28).padEnd(28)} ║`);
+    console.log(`║  duration       ${String(crmPayload.call_duration_seconds + "s").padEnd(28)} ║`);
+    console.log(`║  rpc_confirmed  ${String(crmPayload.rpc_confirmed).padEnd(28)} ║`);
+    console.log(`║  interest       ${String(crmPayload.interest).padEnd(28)} ║`);
+    console.log(`║  employment     ${String(crmPayload.employment_type).padEnd(28)} ║`);
+    console.log(`║  loan_range     ${String(crmPayload.loan_amount_range).padEnd(28)} ║`);
+    console.log(`║  qualified      ${String(crmPayload.qualification_complete).padEnd(28)} ║`);
+    console.log(`║  unclear_count  ${String(crmPayload.unclear_count).padEnd(28)} ║`);
+    console.log(`║  timeout_fired  ${String(crmPayload.hard_timeout_fired).padEnd(28)} ║`);
+    console.log(`║  early_hangup   ${String(crmPayload.call_terminated_early).padEnd(28)} ║`);
+    console.log("╠══════════════════════════════════════════════╣");
+    console.log(`║  rep_priority   ${scoreBar} ${String(score).padStart(3)}/100 ║`);
+    console.log("╠══════════════════════════════════════════════╣");
+    console.log(`║  saved → ${filename.padEnd(36)} ║`);
+    console.log("╚══════════════════════════════════════════════╝\n");
 
     if (callData.id) resultsByCallId.delete(callData.id);
   }
