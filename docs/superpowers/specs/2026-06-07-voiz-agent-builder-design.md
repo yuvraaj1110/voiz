@@ -1,10 +1,32 @@
 # VOIZ Agent Builder — Design Spec
 
 > **Pivot:** from a single hand-built Hindi loan-qualification agent to a
-> **plug-and-play builder**: type a goal + constraints in plain language, and a
-> working Hindi voice agent is generated and deployed that you can talk to in
-> the browser. Built as a **portfolio showpiece** — one polished happy-path
-> flow that reads as a real product.
+> **plug-and-play builder for fintech/BFSI voice agents**: type a goal +
+> constraints in plain language, and a working Hindi voice agent — tuned for
+> Indian lending, collections, KYC and insurance workflows — is generated and
+> deployed that you can talk to in the browser. Built as a **portfolio
+> showpiece** — one polished happy-path flow that reads as a real product.
+
+## 0. Positioning — why fintech, not general-purpose
+
+This is **not** a generic "build any voice bot" toy. It is positioned squarely
+for **Indian BFSI** (banks, NBFCs, lenders, collections, insurers) calling
+Tier-2/3 prospects in conversational Hindi. The differentiation, surfaced in the
+product copy and baked into the generator:
+
+- **Domain-native vocabulary** — the agents and the UI speak BFSI: Right Party
+  Contact (RPC), lead qualification & disposition, ticket size, salaried vs
+  self-employed, EMI, DPD (days-past-due), Promise-to-Pay (PTP), NACH mandate,
+  KYC / pending documents, sanction & disbursal, renewal.
+- **Compliance-first data capture** — agents are generated to **never** collect
+  Aadhaar number, full PAN, full card/CVV, or exact income; they capture ranges
+  and dispositions safe to log. This is a real fintech requirement and a sharp
+  contrast to general-purpose builders.
+- **Outcome framing** — every agent ends in a structured, **rep-prioritised**
+  disposition built for a lending CRM / collections queue, not just a chat log.
+
+The tagline space is "voice agents for lending & collections, in Hindi" — a
+vertical wedge, not a horizontal platform.
 
 Date: 2026-06-07
 Status: Approved (design); pending implementation plan.
@@ -47,6 +69,21 @@ Visual theme: **Mono Minimal (dark)** — `#0a0a0b` background, Inter at weight
 input box is the visual centerpiece. Hero headline cycles EN ⇄ हिंदी every
 ~4.2s with a fade.
 
+### State 0 — Intro animation (landing)
+A short animated sequence that tells the value story, then resolves into Build:
+1. **Customer** node (person icon + waveform + a Hindi line) fades in.
+2. → **VOIZ agent** node with a "DEPLOYED IN 60s" chip.
+3. → **JSON disposition** card (`interest`, `employment`, `ticket`, `score`).
+4. → **Sales rep** node ("picks up pre-qualified").
+5. Tagline lands: *"From customer to qualified lead — before a human says hello."*
+6. The full pipeline **holds for 3 seconds**, then rises/fades and the **Build**
+   view slides up.
+
+Visual language (locked): **Mono Minimal dark** — `#0a0a0b`, Inter weight
+200–400, monochrome with thin-underline accent, generous whitespace.
+**Professional line icons only — no emoji.** Pipeline cards are roomy.
+Respects `prefers-reduced-motion` (skip straight to Build).
+
 ### State 1 — Build
 - Hero headline (animated EN/Hindi).
 - **Large goal textarea** (the centerpiece): free-text agent goal.
@@ -56,9 +93,12 @@ input box is the visual centerpiece. Hero headline cycles EN ⇄ हिंदी
   - Voice: choose from available Vapi/3rd-party Hindi voices.
   - Data points to collect: 1–3 chips the user names (e.g. "employment",
     "loan amount"); default seeded from the goal.
-- **Presets** (2–3): "Loan lead qualifier", "Clinic appointment booking",
-  "Delivery feedback" — clicking one fills the goal + knobs so a live demo
-  never starts blank.
+- **Presets** (all fintech/BFSI): "Loan lead qualification" (RPC → interest →
+  employment → ticket size), "EMI / collections reminder" (DPD, Promise-to-Pay
+  date), "KYC / pending-document follow-up", "Insurance renewal nudge" —
+  clicking one fills the goal + knobs so a live demo never starts blank.
+- **Compliance note** shown inline: a small "🔒 never asks for Aadhaar, full
+  PAN, card/CVV or exact income" badge — reinforces the fintech positioning.
 - **Deploy →** button.
 
 ### State 2 — Live call
@@ -86,6 +126,15 @@ input box is the visual centerpiece. Hero headline cycles EN ⇄ हिंदी
 - Calls **Claude** (Anthropic SDK) with a meta-prompt that includes the existing
   hand-written loan FSM as a **few-shot example** of the desired structure and
   Hindi register.
+- **Domain priming (the fintech differentiator):** the meta-prompt primes Claude
+  with BFSI context so generated agents use correct domain language and
+  guardrails regardless of the goal typed:
+  - Indian lending context: NBFC/bank, personal loan, ticket size in lakh,
+    salaried vs self-employed, EMI, NACH, sanction/disbursal, DPD, PTP, KYC.
+  - **Hard compliance rules injected into every generated prompt:** never ask
+    for Aadhaar number, full PAN, full card number/CVV, OTP, or exact salary;
+    never promise approval, rate, or sanction; capture ranges/dispositions only.
+  - Tier-2/3 conversational Hindi register; short turns; duration cap honored.
 - Returns:
   - `systemPrompt` — an FSM-style prompt in the target register, honoring the
     duration cap and the requested data points, with UNCLEAR/timeout/exit rules.

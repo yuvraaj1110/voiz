@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VOIZ — intro sequence v4</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Noto+Sans+Devanagari:wght@300;400&family=JetBrains+Mono:wght@400&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',system-ui,sans-serif; background:#0a0a0b; color:#f4f4f5;
+         min-height:100vh; display:flex; align-items:center; justify-content:center; padding:48px; overflow:hidden; }
+  .devnag { font-family:'Noto Sans Devanagari',sans-serif; font-weight:300; }
+  .stage { width:100%; max-width:1040px; position:relative; }
+  svg { stroke:#d4d4d8; stroke-width:1.5; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+
+  .pipe { display:flex; align-items:center; justify-content:center; min-height:300px; transition:opacity .7s ease, transform .7s ease; }
+  .node { opacity:0; transform:translateY(14px) scale(.96); transition:opacity .5s ease, transform .5s ease; width:218px; text-align:center; }
+  .node.on { opacity:1; transform:none; }
+  .card { background:#0f0f11; border:1px solid #232327; border-radius:16px; padding:26px 18px; }
+  .ic { height:36px; display:flex; align-items:center; justify-content:center; }
+  .ic svg { width:32px; height:32px; }
+  .nlabel { font-size:15px; font-weight:500; margin-top:14px; }
+  .ncap { font-size:12px; font-weight:300; color:#71717a; margin-top:6px; }
+  .wave { display:flex; gap:3px; justify-content:center; height:18px; align-items:center; margin-top:12px; }
+  .wave span { width:3px; background:#52525b; border-radius:2px; animation:w 1s ease-in-out infinite; }
+  .wave span:nth-child(2){animation-delay:.15s}.wave span:nth-child(3){animation-delay:.3s}.wave span:nth-child(4){animation-delay:.45s}
+  @keyframes w { 0%,100%{height:5px}50%{height:17px} }
+  .json { font-family:'JetBrains Mono',monospace; font-size:12px; text-align:left; color:#a1a1aa; line-height:1.75; }
+  .json .k{color:#e4e4e7}.json .v{color:#fff;border-bottom:1px solid #3a3a40}
+  .arrow { width:58px; opacity:0; transition:opacity .5s ease; display:flex; align-items:center; justify-content:center; }
+  .arrow.on { opacity:1; } .arrow svg{ width:24px; height:24px; stroke:#3f3f46; }
+  .badge60 { display:inline-block; font-size:10px; color:#0a0a0b; background:#f4f4f5; font-weight:600; padding:3px 9px; border-radius:999px; margin-top:12px; letter-spacing:.3px; }
+
+  .tagline { text-align:center; margin-top:32px; font-weight:200; font-size:25px; letter-spacing:-.3px; opacity:0; transition:opacity .6s ease; min-height:34px; }
+  .tagline.on { opacity:1; }
+  .accent { font-weight:400; border-bottom:2px solid #f4f4f5; padding-bottom:2px; }
+
+  .build { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center;
+           opacity:0; transform:translateY(40px); transition:opacity .8s ease, transform .8s ease; pointer-events:none; }
+  .build.on { opacity:1; transform:none; pointer-events:auto; }
+  .brand { font-size:13px; letter-spacing:3px; color:#71717a; margin-bottom:12px; }
+  .eyebrow { font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color:#8a6d3b; margin-bottom:22px; }
+  h1 { font-weight:200; font-size:clamp(32px,4.6vw,50px); line-height:1.16; letter-spacing:-1px; min-height:118px; }
+  #hl { transition:opacity .5s ease; display:block; }
+  .bigbox { margin-top:28px; width:100%; background:#0f0f11; border:1px solid #2a2a30; border-radius:18px; padding:26px 28px 20px; }
+  .bigbox .ph { font-size:19px; font-weight:300; color:#5b5b63; line-height:1.5; }
+  .foot { display:flex; align-items:center; gap:10px; margin-top:30px; padding-top:18px; border-top:1px solid #1c1c20; }
+  .chip { font-size:12px; font-weight:300; color:#a1a1aa; border:1px solid #2a2a30; padding:6px 11px; border-radius:999px; }
+  .lock { font-size:11px; color:#8a6d3b; border:1px solid #3a2f1c; padding:6px 11px; border-radius:999px; display:inline-flex; align-items:center; gap:6px; }
+  .lock svg{ width:12px; height:12px; stroke:#8a6d3b; }
+  .cta { margin-left:auto; font-weight:500; font-size:15px; background:#f4f4f5; color:#0a0a0b; padding:12px 22px; border-radius:11px; }
+  .replay { position:fixed; bottom:18px; right:22px; font-size:12px; color:#52525b; border:1px solid #232327; padding:7px 13px; border-radius:999px; cursor:pointer; background:#0f0f11; }
+</style>
+</head>
+<body>
+  <div class="stage">
+
+    <div class="pipe" id="pipe">
+      <div class="node" id="n1">
+        <div class="card">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+          <div class="nlabel">Customer</div>
+          <div class="wave"><span></span><span></span><span></span><span></span></div>
+          <div class="ncap devnag">"हाँ जी, बोल रहा हूँ"</div></div>
+      </div>
+      <div class="arrow" id="a1"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></div>
+      <div class="node" id="n2">
+        <div class="card">
+          <div class="ic"><svg viewBox="0 0 24 24"><line x1="2" y1="10" x2="2" y2="14"/><line x1="6" y1="6" x2="6" y2="18"/><line x1="10" y1="3" x2="10" y2="21"/><line x1="14" y1="7" x2="14" y2="17"/><line x1="18" y1="5" x2="18" y2="19"/><line x1="22" y1="10" x2="22" y2="14"/></svg></div>
+          <div class="nlabel">VOIZ agent</div>
+          <span class="badge60">DEPLOYED IN 60s</span></div>
+      </div>
+      <div class="arrow" id="a2"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></div>
+      <div class="node" id="n3">
+        <div class="card"><div class="json">{<br>&nbsp;&nbsp;<span class="k">interest</span>: <span class="v">"YES"</span>,<br>&nbsp;&nbsp;<span class="k">employment</span>: <span class="v">"SALARIED"</span>,<br>&nbsp;&nbsp;<span class="k">ticket</span>: <span class="v">"5L+"</span>,<br>&nbsp;&nbsp;<span class="k">score</span>: <span class="v">92</span><br>}</div></div>
+        <div class="ncap">structured disposition</div>
+      </div>
+      <div class="arrow" id="a3"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></div>
+      <div class="node" id="n4">
+        <div class="card">
+          <div class="ic"><svg viewBox="0 0 24 24"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><path d="M21 15a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2z"/><path d="M3 15a2 2 0 0 0 2 2h1v-5H5a2 2 0 0 0-2 2z"/><path d="M12 19a3 3 0 0 0 3-3"/></svg></div>
+          <div class="nlabel">Sales rep</div>
+          <div class="ncap">picks up pre-qualified</div></div>
+      </div>
+    </div>
+    <div class="tagline" id="tag">From customer to qualified lead — <span class="accent">before a human says hello.</span></div>
+
+    <div class="build" id="build">
+      <div class="brand">VOIZ</div>
+      <div class="eyebrow">Hindi voice agents for lending &amp; collections</div>
+      <h1><span id="hl">Deploy a <span class="accent">loan qualification</span> agent in 60 seconds.</span></h1>
+      <div class="bigbox">
+        <div class="ph">Describe the agent — "RPC the borrower, confirm interest, capture employment &amp; ticket size, hand off under 60 seconds…"</div>
+        <div class="foot">
+          <span class="chip">Hindi · Tier 2/3</span>
+          <span class="chip">≤ 60s</span>
+          <span class="lock"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>no Aadhaar / PAN / CVV</span>
+          <span class="cta">Deploy →</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="replay" onclick="play()">↻ replay intro</div>
+
+<script>
+  const HL = [
+    'Deploy a <span class="accent">loan qualification</span> agent in 60 seconds.',
+    '<span class="devnag">60 सेकंड में एक <span class="accent">loan qualification</span> एजेंट बनाइए।</span>',
+    'Spin up an <span class="accent">EMI collections</span> agent in Hindi.',
+    '<span class="devnag">Hindi में <span class="accent">EMI collections</span> एजेंट तैनात करें।</span>'
+  ];
+  let hlTimer=null, hlStop=null;
+  function startHeadline(){
+    const hl=document.getElementById('hl');
+    let j=0;
+    clearInterval(hlTimer); clearTimeout(hlStop);
+    hl.innerHTML = HL[0]; hl.style.opacity=1;
+    hlTimer=setInterval(()=>{
+      hl.style.opacity=0;
+      setTimeout(()=>{ j=(j+1)%HL.length; hl.innerHTML=HL[j]; hl.style.opacity=1; }, 500);
+    }, 4200);
+    // after 3 minutes, stop cycling and lock to English
+    hlStop=setTimeout(()=>{
+      clearInterval(hlTimer);
+      hl.style.opacity=0;
+      setTimeout(()=>{ hl.innerHTML=HL[0]; hl.style.opacity=1; }, 500);
+    }, 180000);
+  }
+
+  function play(){
+    const ids=['n1','a1','n2','a2','n3','a3','n4'];
+    clearInterval(hlTimer); clearTimeout(hlStop);
+    document.getElementById('build').classList.remove('on');
+    document.getElementById('pipe').style.opacity=1;
+    document.getElementById('pipe').style.transform='none';
+    ids.forEach(id=>document.getElementById(id).classList.remove('on'));
+    const tag=document.getElementById('tag'); tag.classList.remove('on'); tag.style.opacity='';
+    let t=300, lastNode=300;
+    ids.forEach(id=>{ setTimeout(()=>document.getElementById(id).classList.add('on'), t); lastNode=t; t+=650; });
+    setTimeout(()=>tag.classList.add('on'), t+150);
+    // hold full pipeline 3s after the final card, then settle into build + start headline cycle
+    setTimeout(()=>{
+      document.getElementById('pipe').style.opacity=0;
+      document.getElementById('pipe').style.transform='translateY(-30px)';
+      tag.style.opacity=0;
+      document.getElementById('build').classList.add('on');
+      startHeadline();
+    }, lastNode + 3000);
+  }
+  play();
+</script>
+</body>
+</html>
