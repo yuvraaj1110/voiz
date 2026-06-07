@@ -8,8 +8,9 @@ import { CustomerIcon, AgentIcon, RepIcon, ArrowIcon } from "./icons";
 export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: () => void }) {
   const { revealed, showTagline, done } = useIntroTimeline({
     nodeCount: PIPELINE.length,
-    stepMs: 650,
-    holdMs: 3000,
+    stepMs: 800,
+    taglineGapMs: 1000,
+    holdMs: 1000,
     enabled,
   });
 
@@ -18,16 +19,16 @@ export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: (
   }, [done, onDone]);
 
   const nodeCls = (i: number) =>
-    `w-[218px] text-center fade transition-transform duration-500 ${
+    `w-[230px] text-center fade transition-transform duration-500 ${
       revealed > i ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
     }`;
 
   return (
-    <div className="w-full max-w-[1040px]">
-      <div className="flex items-center justify-center min-h-[300px]">
+    <div className="w-full max-w-[1100px]">
+      <div className="flex items-center justify-center min-h-[40vh]">
         {/* Customer */}
         <div className={nodeCls(0)}>
-          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[26px]">
+          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[24px] min-h-[33vh] flex flex-col items-center justify-center">
             <div className="h-9 grid place-items-center"><CustomerIcon className="w-8 h-8 text-fg" /></div>
             <div className="text-[15px] font-medium mt-3.5">{PIPELINE[0].label}</div>
             <div className="flex gap-[3px] justify-center items-center h-[18px] mt-3">
@@ -43,7 +44,7 @@ export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: (
 
         {/* Agent */}
         <div className={nodeCls(1)}>
-          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[26px]">
+          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[24px] min-h-[33vh] flex flex-col items-center justify-center">
             <div className="h-9 grid place-items-center"><AgentIcon className="w-8 h-8 text-fg" /></div>
             <div className="text-[15px] font-medium mt-3.5">{PIPELINE[1].label}</div>
             <span className="inline-block text-[10px] text-ink bg-fg font-semibold px-[9px] py-[3px] rounded-full mt-3 tracking-wide">
@@ -56,7 +57,7 @@ export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: (
 
         {/* JSON */}
         <div className={nodeCls(2)}>
-          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[26px]">
+          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[24px] min-h-[33vh] flex flex-col items-center justify-center">
             <pre className="font-mono text-xs text-left text-muted leading-[1.75]">
 {`{
   interest: "${DISPOSITION_JSON.interest}",
@@ -73,7 +74,7 @@ export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: (
 
         {/* Rep */}
         <div className={nodeCls(3)}>
-          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[26px]">
+          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[24px] min-h-[33vh] flex flex-col items-center justify-center">
             <div className="h-9 grid place-items-center"><RepIcon className="w-8 h-8 text-fg" /></div>
             <div className="text-[15px] font-medium mt-3.5">{PIPELINE[3].label}</div>
             <div className="text-xs font-light text-faint mt-1.5">{PIPELINE[3].caption}</div>
