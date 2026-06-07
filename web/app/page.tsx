@@ -1,9 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IntroSequence } from "@/components/IntroSequence";
 import { BuildScreen, type DeployConfig } from "@/components/BuildScreen";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
+
+/** Fades + rises its children in on mount, for a smooth handoff from the intro. */
+function FadeIn({ children }: { children: React.ReactNode }) {
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setShown(true), 30);
+    return () => clearTimeout(t);
+  }, []);
+  return (
+    <div
+      className={`w-full flex justify-center transition-all duration-700 ease-out ${
+        shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+      }`}
+    >
+      {children}
+    </div>
+  );
+}
 
 export default function Page() {
   const reduced = usePrefersReducedMotion();
@@ -22,7 +40,9 @@ export default function Page() {
       {!introDone ? (
         <IntroSequence enabled={!reduced} onDone={() => setIntroDone(true)} />
       ) : (
-        <BuildScreen headlineEnabled={!reduced} onDeploy={handleDeploy} />
+        <FadeIn>
+          <BuildScreen headlineEnabled={!reduced} onDeploy={handleDeploy} />
+        </FadeIn>
       )}
     </main>
   );

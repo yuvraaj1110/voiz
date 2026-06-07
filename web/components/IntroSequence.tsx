@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PIPELINE, TAGLINE_HTML, DISPOSITION_JSON } from "@/lib/content";
 import { useIntroTimeline } from "@/lib/useIntroTimeline";
 import { CustomerIcon, AgentIcon, RepIcon, ArrowIcon } from "./icons";
@@ -9,26 +9,36 @@ export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: (
   const { revealed, showTagline, done } = useIntroTimeline({
     nodeCount: PIPELINE.length,
     stepMs: 800,
-    taglineGapMs: 1000,
+    lastCardExtraMs: 1000,
+    taglineGapMs: 2000,
     holdMs: 1000,
     enabled,
   });
 
+  // On done, fade the whole intro out before handing off to Build (smooth crossfade).
+  const [exiting, setExiting] = useState(false);
   useEffect(() => {
-    if (done) onDone();
+    if (!done) return;
+    setExiting(true);
+    const t = setTimeout(onDone, 700);
+    return () => clearTimeout(t);
   }, [done, onDone]);
 
   const nodeCls = (i: number) =>
-    `w-[230px] text-center fade transition-transform duration-500 ${
+    `w-[265px] text-center fade transition-transform duration-500 ${
       revealed > i ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
     }`;
 
   return (
-    <div className="w-full max-w-[1100px]">
-      <div className="flex items-center justify-center min-h-[40vh]">
+    <div
+      className={`w-full max-w-[1240px] transition-all duration-700 ease-out ${
+        exiting ? "opacity-0 -translate-y-4" : "opacity-100"
+      }`}
+    >
+      <div className="flex items-center justify-center min-h-[46vh]">
         {/* Customer */}
         <div className={nodeCls(0)}>
-          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[24px] min-h-[33vh] flex flex-col items-center justify-center">
+          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[24px] min-h-[38vh] flex flex-col items-center justify-center">
             <div className="h-9 grid place-items-center"><CustomerIcon className="w-8 h-8 text-fg" /></div>
             <div className="text-[15px] font-medium mt-3.5">{PIPELINE[0].label}</div>
             <div className="flex gap-[3px] justify-center items-center h-[18px] mt-3">
@@ -44,7 +54,7 @@ export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: (
 
         {/* Agent */}
         <div className={nodeCls(1)}>
-          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[24px] min-h-[33vh] flex flex-col items-center justify-center">
+          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[24px] min-h-[38vh] flex flex-col items-center justify-center">
             <div className="h-9 grid place-items-center"><AgentIcon className="w-8 h-8 text-fg" /></div>
             <div className="text-[15px] font-medium mt-3.5">{PIPELINE[1].label}</div>
             <span className="inline-block text-[10px] text-ink bg-fg font-semibold px-[9px] py-[3px] rounded-full mt-3 tracking-wide">
@@ -57,7 +67,7 @@ export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: (
 
         {/* JSON */}
         <div className={nodeCls(2)}>
-          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[24px] min-h-[33vh] flex flex-col items-center justify-center">
+          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[24px] min-h-[38vh] flex flex-col items-center justify-center">
             <pre className="font-mono text-xs text-left text-muted leading-[1.75]">
 {`{
   interest: "${DISPOSITION_JSON.interest}",
@@ -74,7 +84,7 @@ export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: (
 
         {/* Rep */}
         <div className={nodeCls(3)}>
-          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[24px] min-h-[33vh] flex flex-col items-center justify-center">
+          <div className="bg-panel border border-line rounded-2xl px-[18px] py-[24px] min-h-[38vh] flex flex-col items-center justify-center">
             <div className="h-9 grid place-items-center"><RepIcon className="w-8 h-8 text-fg" /></div>
             <div className="text-[15px] font-medium mt-3.5">{PIPELINE[3].label}</div>
             <div className="text-xs font-light text-faint mt-1.5">{PIPELINE[3].caption}</div>
@@ -92,7 +102,7 @@ export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: (
 
 function Arrow({ show }: { show: boolean }) {
   return (
-    <div className={`w-[58px] flex items-center justify-center fade ${show ? "opacity-100" : "opacity-0"}`}>
+    <div className={`w-[44px] flex items-center justify-center fade ${show ? "opacity-100" : "opacity-0"}`}>
       <ArrowIcon className="w-6 h-6 text-line2" />
     </div>
   );
