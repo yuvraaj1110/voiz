@@ -9,7 +9,7 @@ export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: (
   const { revealed, showTagline, done } = useIntroTimeline({
     nodeCount: PIPELINE.length,
     stepMs: 800,
-    lastCardExtraMs: 1000,
+    lastCardExtraMs: 0,
     taglineGapMs: 2000,
     holdMs: 1000,
     enabled,
