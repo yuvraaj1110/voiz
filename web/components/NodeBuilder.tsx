@@ -92,7 +92,7 @@ export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promi
   }
 
   return (
-    <div className="w-full max-w-[1100px]">
+    <div className="w-full max-w-[1600px] mx-auto px-8 md:px-14 py-12">
       <div className="flex items-center gap-2.5 text-faint">
         <span className="text-[13px] tracking-[3px]">VOIZ</span>
         <span className="text-line2">/</span>

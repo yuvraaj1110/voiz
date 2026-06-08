@@ -14,7 +14,7 @@ function FadeIn({ children }: { children: React.ReactNode }) {
   }, []);
   return (
     <div
-      className={`w-full flex justify-center transition-all duration-700 ease-out ${
+      className={`w-full transition-all duration-700 ease-out ${
         shown ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
       }`}
     >
@@ -39,9 +39,11 @@ export default function Page() {
   }
 
   return (
-    <main className="min-h-screen grid place-items-center px-12 py-12 overflow-hidden">
+    <main className="min-h-screen w-full">
       {!introDone ? (
-        <IntroSequence enabled={!reduced} onDone={() => setIntroDone(true)} />
+        <div className="min-h-screen grid place-items-center px-12 overflow-hidden">
+          <IntroSequence enabled={!reduced} onDone={() => setIntroDone(true)} />
+        </div>
       ) : (
         <FadeIn>
           <NodeBuilder onDeploy={handleDeploy} />
