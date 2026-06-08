@@ -28,6 +28,8 @@ export type IconKey =
   | "amount"
   | "rep";
 
+export type AccentKey = "sky" | "emerald" | "violet" | "amber" | "teal" | "rose";
+
 export type AgentNode = {
   id: string;
   type: NodeType;
@@ -35,6 +37,7 @@ export type AgentNode = {
   desc: string;
   pill: string;
   icon: IconKey;
+  accent: AccentKey;
   fields: Field[];
   capturesData?: boolean;
 };
@@ -47,6 +50,7 @@ export const DEFAULT_NODES: AgentNode[] = [
     desc: "Confirm you're speaking to the borrower",
     pill: "RPC",
     icon: "customer",
+    accent: "sky",
     fields: [
       { key: "line", label: "Opening line (Hindi)", kind: "text", value: "नमस्ते, क्या मैं {{name}} जी से बात कर रहा हूँ?" },
       { key: "retries", label: "Retries on no-answer", kind: "number", value: 1 },
@@ -59,6 +63,7 @@ export const DEFAULT_NODES: AgentNode[] = [
     desc: "Pitch the pre-approved loan",
     pill: "SCRIPT",
     icon: "offer",
+    accent: "emerald",
     fields: [
       { key: "script", label: "Offer script (Hindi)", kind: "text", value: "आपके नाम पर एक पर्सनल लोन ऑफ़र तैयार है।" },
     ],
@@ -70,6 +75,7 @@ export const DEFAULT_NODES: AgentNode[] = [
     desc: "Gauge whether they want to proceed",
     pill: "BRANCH",
     icon: "interest",
+    accent: "violet",
     fields: [
       { key: "question", label: "Question (Hindi)", kind: "text", value: "क्या आप इसके बारे में और जानना चाहेंगे?" },
     ],
@@ -81,6 +87,7 @@ export const DEFAULT_NODES: AgentNode[] = [
     desc: "Capture salaried vs self-employed",
     pill: "DATA",
     icon: "briefcase",
+    accent: "amber",
     capturesData: true,
     fields: [
       { key: "question", label: "Question (Hindi)", kind: "text", value: "आप नौकरी करते हैं या अपना बिज़नेस है?" },
@@ -94,6 +101,7 @@ export const DEFAULT_NODES: AgentNode[] = [
     desc: "Bucket the ticket size",
     pill: "DATA",
     icon: "amount",
+    accent: "teal",
     capturesData: true,
     fields: [
       { key: "question", label: "Question (Hindi)", kind: "text", value: "आप कितना लोन सोच रहे हैं?" },
@@ -107,6 +115,7 @@ export const DEFAULT_NODES: AgentNode[] = [
     desc: "Close politely & push the disposition",
     pill: "EXIT",
     icon: "rep",
+    accent: "rose",
     fields: [
       { key: "line", label: "Closing line (Hindi)", kind: "text", value: "धन्यवाद, हमारा प्रतिनिधि आपको शीघ्र कॉल करेगा।" },
     ],
@@ -149,6 +158,7 @@ export function makeCustomNode(existing: AgentNode[]): AgentNode {
     desc: "Ask a question and capture the answer",
     pill: "DATA",
     icon: "interest",
+    accent: "violet",
     capturesData: true,
     fields: [
       { key: "question", label: "Question (Hindi)", kind: "text", value: "" },

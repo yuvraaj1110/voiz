@@ -10,6 +10,7 @@ import {
   type AgentNode,
   type Field,
   type IconKey,
+  type AccentKey,
 } from "@/lib/nodes";
 import { EYEBROW } from "@/lib/content";
 import {
@@ -41,6 +42,16 @@ const ICONS: Record<IconKey, (p: { className?: string }) => JSX.Element> = {
   briefcase: BriefcaseIcon,
   amount: AmountIcon,
   rep: RepIcon,
+};
+
+// Per-node-type accent classes (static strings so Tailwind keeps them).
+const ACCENT: Record<AccentKey, { chip: string; icon: string; ring: string }> = {
+  sky: { chip: "bg-sky-500/10", icon: "text-sky-300", ring: "border-sky-400/60" },
+  emerald: { chip: "bg-emerald-500/10", icon: "text-emerald-300", ring: "border-emerald-400/60" },
+  violet: { chip: "bg-violet-500/10", icon: "text-violet-300", ring: "border-violet-400/60" },
+  amber: { chip: "bg-amber-500/10", icon: "text-amber-300", ring: "border-amber-400/60" },
+  teal: { chip: "bg-teal-500/10", icon: "text-teal-300", ring: "border-teal-400/60" },
+  rose: { chip: "bg-rose-500/10", icon: "text-rose-300", ring: "border-rose-400/60" },
 };
 
 export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promise<void> }) {
@@ -98,8 +109,8 @@ export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promi
         <span className="text-line2">/</span>
         <span className="text-xs tracking-[1.5px] uppercase text-gold">{EYEBROW}</span>
       </div>
-      <h1 className="font-extralight text-[34px] -tracking-[0.5px] mt-3.5">Build your agent</h1>
-      <p className="text-muted font-light text-sm mt-1 mb-6">
+      <h1 className="font-extralight text-[44px] -tracking-[0.5px] mt-4">Build your agent</h1>
+      <p className="text-muted font-light text-base mt-1.5 mb-8">
         Each step is a node. Configure it, add your own, then deploy.
       </p>
 
@@ -134,51 +145,52 @@ export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promi
         {nodes.map((n, i) => {
           const Icon = ICONS[n.icon] ?? InterestIcon;
           const active = n.id === selected.id;
+          const a = ACCENT[n.accent];
           return (
             <div key={n.id} className="flex items-center">
               <button
                 data-testid="node-card"
                 onClick={() => setSelectedId(n.id)}
-                className={`text-left w-[190px] shrink-0 bg-panel border rounded-2xl px-4 py-4 transition-colors ${
-                  active ? "border-fg/60" : "border-line hover:border-line2"
+                className={`text-left w-[250px] shrink-0 bg-panel border rounded-2xl px-5 py-5 transition-colors ${
+                  active ? a.ring : "border-line hover:border-line2"
                 }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <span className="w-8 h-8 rounded-lg bg-[#15151a] grid place-items-center shrink-0">
-                    <Icon className="w-4 h-4 text-fg" />
+                <div className="flex items-center gap-3">
+                  <span className={`w-12 h-12 rounded-xl grid place-items-center shrink-0 ${a.chip}`}>
+                    <Icon className={`w-6 h-6 ${a.icon}`} />
                   </span>
                   {n.capturesData && (
-                    <span className="ml-auto text-[9px] tracking-wide text-gold border border-goldline rounded-full px-2 py-0.5">
+                    <span className="ml-auto text-[10px] tracking-wide text-gold border border-goldline rounded-full px-2.5 py-1">
                       DATA
                     </span>
                   )}
                 </div>
-                <div className="text-sm font-medium mt-3">{n.title}</div>
-                <div className="text-[11px] font-light text-faint mt-1 leading-snug">{n.desc}</div>
+                <div className="text-[18px] font-medium mt-4">{n.title}</div>
+                <div className="text-[13px] font-light text-faint mt-1.5 leading-snug">{n.desc}</div>
               </button>
-              {i < nodes.length - 1 && <ArrowIcon className="w-5 h-5 text-line2 mx-0.5 shrink-0" />}
+              {i < nodes.length - 1 && <ArrowIcon className="w-7 h-7 text-muted mx-1.5 shrink-0" />}
             </div>
           );
         })}
 
         <div className="flex items-center">
-          <ArrowIcon className="w-5 h-5 text-line2 mx-0.5 shrink-0" />
+          <ArrowIcon className="w-7 h-7 text-muted mx-1.5 shrink-0" />
           <button
             onClick={addStep}
-            className="w-[150px] h-full min-h-[104px] shrink-0 border border-dashed border-line2 rounded-2xl grid place-items-center text-faint hover:text-fg hover:border-fg/40 transition-colors"
+            className="w-[176px] h-full min-h-[140px] shrink-0 border border-dashed border-line2 rounded-2xl grid place-items-center text-faint hover:text-fg hover:border-fg/40 transition-colors"
           >
-            <span className="flex flex-col items-center gap-1.5 text-xs font-light">
-              <PlusIcon className="w-4 h-4" /> Add step
+            <span className="flex flex-col items-center gap-2 text-sm font-light">
+              <PlusIcon className="w-5 h-5" /> Add step
             </span>
           </button>
         </div>
       </div>
 
       {/* Config panel for the selected node */}
-      <div className="mt-4 bg-panel border border-line rounded-2xl p-5">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="text-sm font-medium">{selected.title}</div>
-          <span className="text-[11px] text-faint">{selected.pill}</span>
+      <div className="mt-5 bg-panel border border-line rounded-2xl p-7">
+        <div className="flex items-center gap-2.5 mb-5">
+          <div className="text-lg font-medium">{selected.title}</div>
+          <span className="text-xs text-faint">{selected.pill}</span>
           {nodes.length > 1 && (
             <button
               onClick={() => removeNode(selected.id)}
@@ -198,14 +210,14 @@ export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promi
       </div>
 
       {/* Deploy bar */}
-      <div className="flex items-center gap-3 mt-6 pt-5 border-t border-line">
-        <span className="text-xs font-light text-faint">
+      <div className="flex items-center gap-3 mt-8 pt-6 border-t border-line">
+        <span className="text-sm font-light text-faint">
           {nodes.length} steps · est. {estSeconds}s · {dataPoints} data point{dataPoints === 1 ? "" : "s"}
         </span>
         <button
           onClick={handleDeploy}
           disabled={deploying}
-          className="ml-auto font-medium text-[15px] bg-fg text-ink px-[22px] py-3 rounded-[11px] disabled:opacity-40 transition-opacity"
+          className="ml-auto font-medium text-base bg-fg text-ink px-7 py-3.5 rounded-xl disabled:opacity-40 transition-opacity"
         >
           {deploying ? "Deploying…" : "⚡ Deploy & test call"}
         </button>
@@ -216,7 +228,7 @@ export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promi
 
 function FieldEditor({ field, onChange }: { field: Field; onChange: (v: Field["value"]) => void }) {
   const label = (
-    <label className="block text-[11px] tracking-wide uppercase text-faint mb-1.5">{field.label}</label>
+    <label className="block text-xs tracking-wide uppercase text-faint mb-2">{field.label}</label>
   );
 
   if (field.kind === "number") {
@@ -228,7 +240,7 @@ function FieldEditor({ field, onChange }: { field: Field; onChange: (v: Field["v
           aria-label={field.label}
           value={Number(field.value)}
           onChange={(e) => onChange(Number(e.target.value))}
-          className="w-28 bg-ink border border-line2 rounded-lg px-3 py-2 text-sm font-light text-fg outline-none focus:border-fg/40"
+          className="w-32 bg-ink border border-line2 rounded-lg px-3 py-2.5 text-base font-light text-fg outline-none focus:border-fg/40"
         />
       </div>
     );
@@ -250,7 +262,7 @@ function FieldEditor({ field, onChange }: { field: Field; onChange: (v: Field["v
                   next[i] = e.target.value;
                   onChange(next);
                 }}
-                className="bg-transparent text-sm font-light text-fg outline-none w-[110px]"
+                className="bg-transparent text-base font-light text-fg outline-none w-[120px]"
               />
               <button
                 aria-label={`Remove option ${i + 1}`}
@@ -281,7 +293,7 @@ function FieldEditor({ field, onChange }: { field: Field; onChange: (v: Field["v
         rows={2}
         value={String(field.value)}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-ink border border-line2 rounded-lg px-3 py-2.5 text-sm font-light text-fg outline-none focus:border-fg/40 resize-none font-deva"
+        className="w-full bg-ink border border-line2 rounded-lg px-3.5 py-3 text-base font-light text-fg outline-none focus:border-fg/40 resize-none font-deva"
       />
     </div>
   );
