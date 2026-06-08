@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { IntroSequence } from "@/components/IntroSequence";
-import { BuildScreen, type DeployConfig } from "@/components/BuildScreen";
+import { NodeBuilder, type BuildPayload } from "@/components/NodeBuilder";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 
 /** Fades + rises its children in on mount, for a smooth handoff from the intro. */
@@ -28,11 +28,14 @@ export default function Page() {
   const [introDone, setIntroDone] = useState(false);
 
   // Mocked deploy until the backend plan lands.
-  async function handleDeploy(cfg: DeployConfig) {
+  async function handleDeploy(payload: BuildPayload) {
     await new Promise((r) => setTimeout(r, 1200));
     // eslint-disable-next-line no-console
-    console.log("[mock deploy]", cfg);
-    alert(`Mock deploy:\n\n${cfg.goal}\n\nData points: ${cfg.dataPoints.join(", ") || "—"}`);
+    console.log("[mock deploy]", payload);
+    alert(
+      `Mock deploy:\n\n${payload.nodes.length} steps · est. ${payload.estSeconds}s\n` +
+        `${payload.dataPoints} data point(s) · voice ${payload.voice}`,
+    );
   }
 
   return (
@@ -41,7 +44,7 @@ export default function Page() {
         <IntroSequence enabled={!reduced} onDone={() => setIntroDone(true)} />
       ) : (
         <FadeIn>
-          <BuildScreen headlineEnabled={!reduced} onDeploy={handleDeploy} />
+          <NodeBuilder onDeploy={handleDeploy} />
         </FadeIn>
       )}
     </main>

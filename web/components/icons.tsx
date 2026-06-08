@@ -58,3 +58,66 @@ export function LockIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function OfferIcon({ className }: IconProps) {
+  return (
+    <svg {...common} className={`${base} ${className ?? ""}`}>
+      <path d="M12 1v22" />
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+    </svg>
+  );
+}
+
+export function InterestIcon({ className }: IconProps) {
+  return (
+    <svg {...common} className={`${base} ${className ?? ""}`}>
+      <path d="M21 11.5a8.38 8.38 0 0 1-9 8.4 8.5 8.5 0 0 1-3.9-.9L3 20l1-3.1A8.38 8.38 0 0 1 3 11.5a8.5 8.5 0 0 1 17 0z" />
+    </svg>
+  );
+}
+
+export function BriefcaseIcon({ className }: IconProps) {
+  return (
+    <svg {...common} className={`${base} ${className ?? ""}`}>
+      <rect x="2" y="7" width="20" height="14" rx="2" />
+      <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+    </svg>
+  );
+}
+
+export function AmountIcon({ className }: IconProps) {
+  return (
+    <svg {...common} className={`${base} ${className ?? ""}`}>
+      <line x1="12" y1="2" x2="12" y2="22" />
+      <path d="M5 7h9a3 3 0 0 1 0 6H7" />
+      <path d="M7 13h7a3 3 0 0 1 0 6H5" />
+    </svg>
+  );
+}
+
+export function PlusIcon({ className }: IconProps) {
+  return (
+    <svg {...common} className={`${base} ${className ?? ""}`}>
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+  );
+}
+
+export function ChevronIcon({ className }: IconProps) {
+  return (
+    <svg {...common} className={`${base} ${className ?? ""}`}>
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  );
+}
+
+export function TrashIcon({ className }: IconProps) {
+  return (
+    <svg {...common} className={`${base} ${className ?? ""}`}>
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+      <path d="M10 11v6M14 11v6" />
+    </svg>
+  );
+}
