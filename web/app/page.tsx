@@ -45,9 +45,32 @@ export default function Page() {
           <IntroSequence enabled={!reduced} onDone={() => setIntroDone(true)} />
         </div>
       ) : (
-        <FadeIn>
-          <NodeBuilder onDeploy={handleDeploy} />
-        </FadeIn>
+        <div className="relative min-h-screen">
+          {/* personality backdrop: dotted canvas + ambient brand glows */}
+          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)",
+                backgroundSize: "24px 24px",
+              }}
+            />
+            <div
+              className="absolute -top-48 right-[-8%] w-[620px] h-[620px] rounded-full blur-[130px]"
+              style={{ background: "radial-gradient(circle, rgba(245,158,11,0.20), transparent 70%)" }}
+            />
+            <div
+              className="absolute bottom-[-25%] left-[-8%] w-[640px] h-[640px] rounded-full blur-[140px]"
+              style={{ background: "radial-gradient(circle, rgba(217,70,239,0.16), transparent 70%)" }}
+            />
+          </div>
+          <div className="relative">
+            <FadeIn>
+              <NodeBuilder onDeploy={handleDeploy} />
+            </FadeIn>
+          </div>
+        </div>
       )}
     </main>
   );

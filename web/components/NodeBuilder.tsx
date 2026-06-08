@@ -45,13 +45,13 @@ const ICONS: Record<IconKey, (p: { className?: string }) => JSX.Element> = {
 };
 
 // Per-node-type accent classes (static strings so Tailwind keeps them).
-const ACCENT: Record<AccentKey, { chip: string; icon: string; ring: string }> = {
-  sky: { chip: "bg-sky-500/10", icon: "text-sky-300", ring: "border-sky-400/60" },
-  emerald: { chip: "bg-emerald-500/10", icon: "text-emerald-300", ring: "border-emerald-400/60" },
-  violet: { chip: "bg-violet-500/10", icon: "text-violet-300", ring: "border-violet-400/60" },
-  amber: { chip: "bg-amber-500/10", icon: "text-amber-300", ring: "border-amber-400/60" },
-  teal: { chip: "bg-teal-500/10", icon: "text-teal-300", ring: "border-teal-400/60" },
-  rose: { chip: "bg-rose-500/10", icon: "text-rose-300", ring: "border-rose-400/60" },
+const ACCENT: Record<AccentKey, { chip: string; icon: string; ring: string; glow: string }> = {
+  sky: { chip: "bg-sky-500/10", icon: "text-sky-300", ring: "border-sky-400/70", glow: "shadow-[0_0_28px_-6px_rgba(56,189,248,0.55)]" },
+  emerald: { chip: "bg-emerald-500/10", icon: "text-emerald-300", ring: "border-emerald-400/70", glow: "shadow-[0_0_28px_-6px_rgba(16,185,129,0.55)]" },
+  violet: { chip: "bg-violet-500/10", icon: "text-violet-300", ring: "border-violet-400/70", glow: "shadow-[0_0_28px_-6px_rgba(139,92,246,0.55)]" },
+  amber: { chip: "bg-amber-500/10", icon: "text-amber-300", ring: "border-amber-400/70", glow: "shadow-[0_0_28px_-6px_rgba(245,158,11,0.55)]" },
+  teal: { chip: "bg-teal-500/10", icon: "text-teal-300", ring: "border-teal-400/70", glow: "shadow-[0_0_28px_-6px_rgba(20,184,166,0.55)]" },
+  rose: { chip: "bg-rose-500/10", icon: "text-rose-300", ring: "border-rose-400/70", glow: "shadow-[0_0_28px_-6px_rgba(244,63,94,0.55)]" },
 };
 
 export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promise<void> }) {
@@ -104,8 +104,10 @@ export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promi
 
   return (
     <div className="w-full max-w-[1600px] mx-auto px-8 md:px-14 py-12">
-      <div className="flex items-center gap-2.5 text-faint">
-        <span className="text-[13px] tracking-[3px]">VOIZ</span>
+      <div className="flex items-center gap-2.5">
+        <span className="text-[15px] font-bold tracking-[3px] bg-gradient-to-r from-amber-300 to-fuchsia-400 bg-clip-text text-transparent">
+          VOIZ
+        </span>
         <span className="text-line2">/</span>
         <span className="text-xs tracking-[1.5px] uppercase text-gold">{EYEBROW}</span>
       </div>
@@ -151,8 +153,8 @@ export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promi
               <button
                 data-testid="node-card"
                 onClick={() => setSelectedId(n.id)}
-                className={`text-left w-[250px] shrink-0 bg-panel border rounded-2xl px-5 py-5 transition-colors ${
-                  active ? a.ring : "border-line hover:border-line2"
+                className={`text-left w-[250px] shrink-0 bg-panel border rounded-2xl px-5 py-5 transition-all ${
+                  active ? `${a.ring} ${a.glow}` : "border-line hover:border-line2"
                 }`}
               >
                 <div className="flex items-center gap-3">
@@ -217,7 +219,7 @@ export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promi
         <button
           onClick={handleDeploy}
           disabled={deploying}
-          className="ml-auto font-medium text-base bg-fg text-ink px-7 py-3.5 rounded-xl disabled:opacity-40 transition-opacity"
+          className="ml-auto font-semibold text-base text-ink px-7 py-3.5 rounded-xl bg-gradient-to-r from-amber-300 to-fuchsia-400 shadow-[0_8px_30px_-8px_rgba(217,70,239,0.5)] hover:brightness-110 disabled:opacity-40 transition-all"
         >
           {deploying ? "Deploying…" : "⚡ Deploy & test call"}
         </button>
