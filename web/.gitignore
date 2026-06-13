@@ -3,3 +3,7 @@
 /out
 next-env.d.ts
 *.tsbuildinfo
+
+# local env (secrets — never commit)
+.env*.local
+.env.local

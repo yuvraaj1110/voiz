@@ -105,10 +105,6 @@ export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promi
   return (
     <div className="w-full max-w-[1600px] mx-auto px-8 md:px-14 py-12">
       <div className="flex items-center gap-2.5">
-        <span className="text-[15px] font-bold tracking-[3px] bg-gradient-to-r from-amber-300 to-fuchsia-400 bg-clip-text text-transparent">
-          VOIZ
-        </span>
-        <span className="text-line2">/</span>
         <span className="text-xs tracking-[1.5px] uppercase text-gold">{EYEBROW}</span>
       </div>
       <h1 className="font-extralight text-[44px] -tracking-[0.5px] mt-4">Build your agent</h1>

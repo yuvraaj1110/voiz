@@ -22,6 +22,18 @@ function FadeIn({ children }: { children: React.ReactNode }) {
   );
 }
 
+function HomeLogo({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label="VOIZ — back to builder"
+      className="fixed top-5 left-6 z-50 text-[15px] font-bold tracking-[3px] bg-gradient-to-r from-amber-300 to-fuchsia-400 bg-clip-text text-transparent hover:brightness-125 transition"
+    >
+      VOIZ
+    </button>
+  );
+}
+
 type Stage = "intro" | "build" | "live" | "result";
 
 type Deployed = {
@@ -37,6 +49,12 @@ export default function Page() {
   const [stage, setStage] = useState<Stage>("intro");
   const [deployed, setDeployed] = useState<Deployed | null>(null);
   const [result, setResult] = useState<CallState | null>(null);
+
+  function goHome() {
+    setDeployed(null);
+    setResult(null);
+    setStage("build");
+  }
 
   async function handleDeploy(payload: BuildPayload) {
     const res = await fetch("/api/deploy", {
@@ -62,6 +80,8 @@ export default function Page() {
 
   return (
     <main className="min-h-screen w-full">
+      <HomeLogo onClick={goHome} />
+
       {stage === "intro" && (
         <div className="min-h-screen grid place-items-center px-12 overflow-hidden">
           <IntroSequence enabled={!reduced} onDone={() => setStage("build")} />

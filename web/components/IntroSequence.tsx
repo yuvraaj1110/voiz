@@ -11,7 +11,7 @@ export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: (
     stepMs: 800,
     lastCardExtraMs: 0,
     taglineGapMs: 2000,
-    holdMs: 1000,
+    holdMs: 500,
     enabled,
   });
 
