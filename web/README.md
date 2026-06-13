@@ -33,6 +33,21 @@ npm run build
   `vapi` (assistant body + create), `payload-builder`, `latency-tracker`,
   `callReducer` + `useVapiCall`, `useIntroTimeline`, `usePrefersReducedMotion`
 
+## Demo modes
+
+The app runs in one of two modes, resolved client-side from the URL:
+
+- **Mock (default, public):** `/` — the builder is real, but Deploy/Talk run a
+  **simulated** Hindi call (scripted transcript through the real reducer +
+  scorer). No mic, no Vapi, **no cost**. This is what visitors see.
+- **Real:** `/?real=1` — Deploy hits `/api/deploy` and Talk uses the Vapi Web
+  SDK. Only works where Vapi keys are set (your local `.env.local`).
+
+**Deploy safety:** on the public host (Vercel) **do not set** `VAPI_PRIVATE_KEY`
+/ `VAPI_PUBLIC_KEY`. Real mode is then inert even if someone adds `?real=1`, so
+the public demo can never spend money. Keep the keys only in local `.env.local`
+for the live review.
+
 ## Backend / live call
 
 Deploy compiles your node graph into a Vapi assistant and runs a real
