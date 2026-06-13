@@ -10,8 +10,8 @@ export function IntroSequence({ enabled, onDone }: { enabled: boolean; onDone: (
     nodeCount: PIPELINE.length,
     stepMs: 800,
     lastCardExtraMs: 0,
-    taglineGapMs: 2000,
-    holdMs: 500,
+    taglineGapMs: 1200,
+    holdMs: 1000,
     enabled,
   });
 

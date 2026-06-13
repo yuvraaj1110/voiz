@@ -102,7 +102,7 @@ function LiveCallView({
         {status === "idle" || status === "error" ? (
           <button
             onClick={onTalk}
-            className="font-semibold text-base text-ink px-7 py-3.5 rounded-xl bg-gradient-to-r from-amber-300 to-fuchsia-400 hover:brightness-110 transition-all"
+            className="font-semibold text-base text-ink px-7 py-3.5 rounded-xl bg-amber-300 hover:bg-amber-200 transition-all"
           >
             🎙 Talk
           </button>

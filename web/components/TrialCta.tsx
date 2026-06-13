@@ -1,15 +1,14 @@
 const MAIL = "yuvraajsuri1110@gmail.com";
-const SUBJECT = "VOIZ — free trial request";
-const BODY = "Hi Yuvraaj, I tried the VOIZ demo and would like a free trial.";
+const SUBJECT = "VOIZ — trial request";
+const BODY = "Hi Yuvraaj, I tried the VOIZ demo and would like to start a trial.";
 
 const HREF = `mailto:${MAIL}?subject=${encodeURIComponent(SUBJECT)}&body=${encodeURIComponent(BODY)}`;
 
-const BASE =
-  "bg-gradient-to-r from-amber-300 to-fuchsia-400 text-ink font-semibold hover:brightness-110 transition-all";
+const BASE = "bg-amber-300 text-ink font-semibold hover:bg-amber-200 transition-all";
 
 export function TrialCta({
   variant = "inline",
-  label = "Start free trial →",
+  label = "Start your trial →",
 }: {
   variant?: "floating" | "inline";
   label?: string;

@@ -30,7 +30,7 @@ function HomeLogo({ onClick }: { onClick: () => void }) {
     <button
       onClick={onClick}
       aria-label="VOIZ — back to builder"
-      className="fixed top-5 left-6 z-50 text-[15px] font-bold tracking-[3px] bg-gradient-to-r from-amber-300 to-fuchsia-400 bg-clip-text text-transparent hover:brightness-125 transition"
+      className="fixed top-5 left-6 z-50 text-[15px] font-bold tracking-[3px] text-amber-300 hover:text-amber-200 transition"
     >
       VOIZ
     </button>

@@ -63,11 +63,11 @@ export function ResultCard({
       <div className="flex items-center gap-4">
         <button
           onClick={onRestart}
-          className="font-medium text-base text-ink px-7 py-3.5 rounded-xl bg-gradient-to-r from-amber-300 to-fuchsia-400 hover:brightness-110 transition-all"
+          className="font-medium text-base text-ink px-7 py-3.5 rounded-xl bg-amber-300 hover:bg-amber-200 transition-all"
         >
           Build another
         </button>
-        <TrialCta variant="inline" label="Like it? Start free trial →" />
+        <TrialCta variant="inline" label="Like it? Start your trial →" />
       </div>
     </div>
   );

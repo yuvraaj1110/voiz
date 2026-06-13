@@ -215,7 +215,7 @@ export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promi
         <button
           onClick={handleDeploy}
           disabled={deploying}
-          className="ml-auto font-semibold text-base text-ink px-7 py-3.5 rounded-xl bg-gradient-to-r from-amber-300 to-fuchsia-400 shadow-[0_8px_30px_-8px_rgba(217,70,239,0.5)] hover:brightness-110 disabled:opacity-40 transition-all"
+          className="ml-auto font-semibold text-base text-ink px-7 py-3.5 rounded-xl bg-amber-300 shadow-[0_8px_30px_-8px_rgba(245,158,11,0.5)] hover:bg-amber-200 disabled:opacity-40 transition-all"
         >
           {deploying ? "Deploying…" : "⚡ Deploy & test call"}
         </button>
