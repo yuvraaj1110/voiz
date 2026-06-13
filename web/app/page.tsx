@@ -5,6 +5,9 @@ import { IntroSequence } from "@/components/IntroSequence";
 import { NodeBuilder, type BuildPayload } from "@/components/NodeBuilder";
 import { LiveCall } from "@/components/LiveCall";
 import { ResultCard } from "@/components/ResultCard";
+import { TrialCta } from "@/components/TrialCta";
+import { compileAgent } from "@/lib/compiler";
+import { resolveMode, type DemoMode } from "@/lib/mode";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 import type { AgentNode } from "@/lib/nodes";
 import type { CallState } from "@/lib/callReducer";
@@ -46,6 +49,10 @@ type Deployed = {
 
 export default function Page() {
   const reduced = usePrefersReducedMotion();
+  const [mode, setMode] = useState<DemoMode>("mock");
+  useEffect(() => {
+    setMode(resolveMode(window.location.search));
+  }, []);
   const [stage, setStage] = useState<Stage>("intro");
   const [deployed, setDeployed] = useState<Deployed | null>(null);
   const [result, setResult] = useState<CallState | null>(null);
@@ -57,6 +64,22 @@ export default function Page() {
   }
 
   async function handleDeploy(payload: BuildPayload) {
+    if (mode === "mock") {
+      const compiled = compileAgent(payload.nodes, {
+        voice: payload.voice,
+        register: payload.register,
+        maxDurationSec: payload.maxDurationSec,
+      });
+      setDeployed({
+        assistantId: "demo",
+        publicKey: "",
+        captureKeys: compiled.captureKeys,
+        nodes: payload.nodes,
+        maxDurationSec: payload.maxDurationSec,
+      });
+      setStage("live");
+      return;
+    }
     const res = await fetch("/api/deploy", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -81,6 +104,7 @@ export default function Page() {
   return (
     <main className="min-h-screen w-full">
       <HomeLogo onClick={goHome} />
+      <TrialCta variant="floating" />
 
       {stage === "intro" && (
         <div className="min-h-screen grid place-items-center px-12 overflow-hidden">
@@ -104,11 +128,11 @@ export default function Page() {
       {stage === "live" && deployed && (
         <FadeIn>
           <LiveCall
+            mode={mode}
             assistantId={deployed.assistantId}
             publicKey={deployed.publicKey}
             nodes={deployed.nodes}
             captureKeys={deployed.captureKeys}
-            maxDurationSec={deployed.maxDurationSec}
             onEnded={(s) => { setResult(s); setStage("result"); }}
           />
         </FadeIn>

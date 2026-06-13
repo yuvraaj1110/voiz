@@ -5,6 +5,7 @@ import type { AgentNode } from "@/lib/nodes";
 import type { CallState } from "@/lib/callReducer";
 import { buildCrmPayload } from "@/lib/payload-builder";
 import { computeTurnLatencies, summarizeLatency } from "@/lib/latency-tracker";
+import { TrialCta } from "@/components/TrialCta";
 
 export function ResultCard({
   call,
@@ -59,12 +60,15 @@ export function ResultCard({
         </div>
       </div>
 
-      <button
-        onClick={onRestart}
-        className="font-medium text-base text-ink px-7 py-3.5 rounded-xl bg-gradient-to-r from-amber-300 to-fuchsia-400 hover:brightness-110 transition-all"
-      >
-        Build another
-      </button>
+      <div className="flex items-center gap-4">
+        <button
+          onClick={onRestart}
+          className="font-medium text-base text-ink px-7 py-3.5 rounded-xl bg-gradient-to-r from-amber-300 to-fuchsia-400 hover:brightness-110 transition-all"
+        >
+          Build another
+        </button>
+        <TrialCta variant="inline" label="Like it? Start free trial →" />
+      </div>
     </div>
   );
 }
