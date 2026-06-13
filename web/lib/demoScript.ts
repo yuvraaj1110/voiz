@@ -8,6 +8,9 @@ export type ScriptStep =
 
 const STEP_GAP_MS = 1300;
 
+/** Omit that distributes over a union, so each member keeps its own fields. */
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
+
 const CANNED_USER: Record<string, string> = {
   rpc: "जी हाँ, मैं ही बोल रहा हूँ।",
   interest: "हाँ, ज़रा बताइए।",
@@ -34,7 +37,7 @@ export function buildDemoScript(
 ): ScriptStep[] {
   const steps: ScriptStep[] = [];
   let t = 0;
-  const push = (s: Omit<ScriptStep, "atMs">) => {
+  const push = (s: DistributiveOmit<ScriptStep, "atMs">) => {
     steps.push({ atMs: t, ...s } as ScriptStep);
     t += STEP_GAP_MS;
   };
