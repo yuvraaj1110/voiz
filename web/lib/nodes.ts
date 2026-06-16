@@ -54,6 +54,7 @@ export const DEFAULT_NODES: AgentNode[] = [
     fields: [
       { key: "line", label: "Opening line (Hindi)", kind: "text", value: "नमस्ते, क्या मैं {{name}} जी से बात कर रहा हूँ?" },
       { key: "retries", label: "Retries on no-answer", kind: "number", value: 1 },
+      { key: "reply", label: "Sample customer reply (demo)", kind: "text", value: "जी हाँ, मैं ही बोल रहा हूँ।" },
     ],
   },
   {
@@ -78,6 +79,7 @@ export const DEFAULT_NODES: AgentNode[] = [
     accent: "violet",
     fields: [
       { key: "question", label: "Question (Hindi)", kind: "text", value: "क्या आप इसके बारे में और जानना चाहेंगे?" },
+      { key: "reply", label: "Sample customer reply (demo)", kind: "text", value: "हाँ, ज़रा बताइए।" },
     ],
   },
   {
@@ -92,6 +94,7 @@ export const DEFAULT_NODES: AgentNode[] = [
     fields: [
       { key: "question", label: "Question (Hindi)", kind: "text", value: "आप नौकरी करते हैं या अपना बिज़नेस है?" },
       { key: "options", label: "Capture as", kind: "options", value: ["SALARIED", "SELF_EMPLOYED"] },
+      { key: "reply", label: "Sample customer reply (demo)", kind: "text", value: "मैं नौकरी करता हूँ।" },
     ],
   },
   {
@@ -106,6 +109,7 @@ export const DEFAULT_NODES: AgentNode[] = [
     fields: [
       { key: "question", label: "Question (Hindi)", kind: "text", value: "आप कितना लोन सोच रहे हैं?" },
       { key: "options", label: "Buckets", kind: "options", value: ["1-3L", "3-5L", "5L+"] },
+      { key: "reply", label: "Sample customer reply (demo)", kind: "text", value: "एक से तीन लाख तक।" },
     ],
   },
   {
@@ -163,6 +167,7 @@ export function makeCustomNode(existing: AgentNode[]): AgentNode {
     fields: [
       { key: "question", label: "Question (Hindi)", kind: "text", value: "" },
       { key: "field", label: "Capture as", kind: "text", value: "custom_field" },
+      { key: "reply", label: "Sample customer reply (demo)", kind: "text", value: "" },
     ],
   };
 }

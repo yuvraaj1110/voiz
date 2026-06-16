@@ -40,6 +40,11 @@ The app runs in one of two modes, resolved client-side from the URL:
 - **Mock (default, public):** `/` — the builder is real, but Deploy/Talk run a
   **simulated** Hindi call (scripted transcript through the real reducer +
   scorer). No mic, no Vapi, **no cost**. This is what visitors see.
+
+  Each step has an editable **Sample customer reply** field — type any text
+  (Hinglish included) and the simulation plays it as the customer's line; for
+  custom steps it also becomes the captured value in the result. Add a step,
+  type its question + reply, and it appears as an extra exchange in the sim.
 - **Real:** `/?real=1` — Deploy hits `/api/deploy` and Talk uses the Vapi Web
   SDK. Only works where Vapi keys are set (your local `.env.local`).
 
