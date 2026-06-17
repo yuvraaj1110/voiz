@@ -200,6 +200,11 @@ export function NodeBuilder({ onDeploy }: { onDeploy: (p: BuildPayload) => Promi
           )}
         </div>
 
+        <div className="mb-4 inline-flex items-center gap-2 text-xs text-amber-200 bg-amber-300/10 border border-amber-300/30 rounded-lg px-3 py-1.5">
+          <span>💬</span>
+          <span>Type in <span className="font-semibold">English or Hindi</span> — both work in any text box.</span>
+        </div>
+
         <div className="grid gap-4">
           {selected.fields.map((f) => (
             <FieldEditor key={f.key} field={f} onChange={(v) => setField(f.key, v)} />
