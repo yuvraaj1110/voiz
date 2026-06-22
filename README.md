@@ -1,12 +1,16 @@
 <h1 align="center">🗣️ VOIZ — Hindi Voice Lead Qualification Agent</h1>
 
 <p align="center">
-  An outbound voice agent that calls loan prospects in <b>conversational Hindi</b>, qualifies them through a finite-state conversation, and hands a <b>structured, scored lead</b> to a human sales rep — all within <b>55 seconds</b>.
+  An outbound voice agent that calls loan prospects in <b>conversational Hindi</b>, qualifies them through a finite-state conversation, and hands a <b>structured, scored lead</b> to a human sales rep — all within <b>55 seconds</b>. Now also a <b>plug-and-play builder</b>: design the agent as editable nodes and watch it run.
 </p>
 
 <p align="center">
-  <a href="https://github.com/yuvraaj1110/VOIZ/actions/workflows/ci.yml"><img src="https://github.com/yuvraaj1110/VOIZ/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <img src="https://img.shields.io/badge/tests-24%20passing-brightgreen" alt="tests">
+  <a href="https://voiz-8vl1.vercel.app"><b>▶ Live demo</b></a> &nbsp;·&nbsp; build & simulate a voice agent in your browser (no signup, no mic)
+</p>
+
+<p align="center">
+  <a href="https://github.com/yuvraaj1110/voiz/actions/workflows/ci.yml"><img src="https://github.com/yuvraaj1110/voiz/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/tests-56%20passing-brightgreen" alt="tests">
   <img src="https://img.shields.io/badge/call%20budget-55s-blue" alt="call budget">
   <img src="https://img.shields.io/badge/language-Hindi-orange" alt="language">
   <img src="https://img.shields.io/badge/Vapi-Deepgram%20Nova--3-black" alt="stack">
