@@ -1,4 +1,4 @@
-<h1 align="center">🗣️ VOIZ — Hindi Voice Lead Qualification Agent</h1>
+<h1 align="center">🗣️ Genie — Hindi Voice Lead Qualification Agent</h1>
 
 <p align="center">
   An outbound voice agent that calls loan prospects in <b>conversational Hindi</b>, qualifies them through a finite-state conversation, and hands a <b>structured, scored lead</b> to a human sales rep — all within <b>55 seconds</b>. Now also a <b>plug-and-play builder</b>: design the agent as editable nodes and watch it run.
