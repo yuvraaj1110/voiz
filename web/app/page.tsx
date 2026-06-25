@@ -5,6 +5,7 @@ import { IntroSequence } from "@/components/IntroSequence";
 import { NodeBuilder, type BuildPayload } from "@/components/NodeBuilder";
 import { LiveCall } from "@/components/LiveCall";
 import { ResultCard } from "@/components/ResultCard";
+import { GenieLamp } from "@/components/GenieLamp";
 import { TrialCta } from "@/components/TrialCta";
 import { compileAgent } from "@/lib/compiler";
 import { resolveMode, type DemoMode } from "@/lib/mode";
@@ -29,10 +30,11 @@ function HomeLogo({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      aria-label="VOIZ — back to builder"
-      className="fixed top-5 left-6 z-50 text-[15px] font-bold tracking-[3px] text-amber-300 hover:text-amber-200 transition"
+      aria-label="genie — back to builder"
+      className="fixed top-4 left-5 z-50 flex items-center gap-2 hover:brightness-110 transition"
     >
-      VOIZ
+      <GenieLamp className="h-7 w-7" />
+      <span className="text-[15px] font-bold tracking-[2px] text-amber-300 lowercase">genie</span>
     </button>
   );
 }

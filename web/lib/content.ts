@@ -11,7 +11,7 @@ export type PipelineNode = {
 
 export const PIPELINE: PipelineNode[] = [
   { id: "customer", label: "Customer", caption: "हाँ जी, बोल रहा हूँ" },
-  { id: "agent", label: "VOIZ agent", caption: "DEPLOYED IN 60s" },
+  { id: "agent", label: "Genie agent", caption: "DEPLOYED IN 60s" },
   { id: "json", label: "structured disposition" },
   { id: "rep", label: "Sales rep", caption: "picks up pre-qualified" },
 ];

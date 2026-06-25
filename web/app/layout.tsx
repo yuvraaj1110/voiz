@@ -9,7 +9,7 @@ const deva = Noto_Sans_Devanagari({ subsets: ["devanagari"], weight: ["300", "40
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "VOIZ — Hindi voice agents for lending & collections",
+  title: "Genie — Hindi voice agents for lending & collections",
   description: "Type a goal, deploy a compliant Hindi voice agent in 60 seconds.",
 };
 

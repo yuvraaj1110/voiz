@@ -1,6 +1,6 @@
 const MAIL = "yuvraajsuri1110@gmail.com";
-const SUBJECT = "VOIZ — trial request";
-const BODY = "Hi Yuvraaj, I tried the VOIZ demo and would like to start a trial.";
+const SUBJECT = "Genie — trial request";
+const BODY = "Hi Yuvraaj, I tried the Genie demo and would like to start a trial.";
 
 const HREF = `mailto:${MAIL}?subject=${encodeURIComponent(SUBJECT)}&body=${encodeURIComponent(BODY)}`;
 
