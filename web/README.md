@@ -1,4 +1,4 @@
-# VOIZ Agent Builder — Web (frontend)
+# Genie Agent Builder — Web (frontend)
 
 Next.js frontend for the plug-and-play Hindi voice-agent builder. This is the
 **frontend-only** slice: animated intro → fintech Build screen with a mocked
